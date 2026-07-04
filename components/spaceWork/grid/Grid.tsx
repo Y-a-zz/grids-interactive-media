@@ -1,5 +1,6 @@
 import React, {useEffect} from "react";
-import {componentMap, shapeOptions} from "@/app/shapes/Shapes";
+import {componentMap, shapeOptions} from "@/util/shapes/Shapes";
+
 type Shape = {
     id:number,
     x: number,
@@ -109,7 +110,7 @@ const Grid:React.FC<GridState> = ({setDraggingIndex,draggingIndex,dragOffset, sh
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
         };
-    }, [draggingIndex, dragOffset, setShapes]);
+    }, [draggingIndex, dragOffset, setShapes, setDraggingIndex]);
 
 
 

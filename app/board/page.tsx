@@ -1,14 +1,14 @@
 'use client'
+
 import React, {useEffect, useState} from 'react';
-import {colorOptions} from "@/app/artBoard/util/colors";
-import {shapeOptions} from "@/app/shapes/Shapes"
-import homeIcon from "app/assets/icons/homeButton.png";
-import Image from "next/image";
-import Link from 'next/link';
-import FileBar from "@/app/components/file/FileBar";
-import ToolsBar from "@/app/components/tools/ToolsBar";
-import Freeform from "@/app/components/spaceWork/freeform/Freeform";
-import Grid from "@/app/components/spaceWork/grid/Grid";
+import {colorOptions} from "@/util/colors";
+import {shapeOptions} from "@/util/shapes/Shapes";
+import FileBar from "@/components/file/FileBar";
+import ToolsBar from "@/components/tools/ToolsBar";
+import Freeform from "@/components/spaceWork/freeform/Freeform";
+import Grid from "@/components/spaceWork/grid/Grid";
+import {Header} from "@/components/Header";
+
 
 
 
@@ -23,11 +23,10 @@ type Shape = {
 }
 
 
-export default function ArtBoard() {
+export default function Board() {
     const [gridActive , setGridActive] = useState<boolean>(true);
     const [fileOnView, setFileOnView] = useState<boolean>(false);
-    const [toolsOnView, setToolsOnView] = useState<boolean>(false);
-    const [selectedButton, setSelectedButton] = useState<'file' | 'tools' | null>(null);
+    const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
     const [shapes, setShapes] = useState<Shape[]>([]);
     const [selectedSize, setSelectedSize] = useState< number>(40);
     const [selectedColor, setSelectedColor] = useState<string>(colorOptions[0]);
@@ -55,7 +54,7 @@ export default function ArtBoard() {
         if (!selectedShape) return;
 
         setShapes((prev) => [...prev, {
-           id:generatedShapId(), x, y, componentKey: selectedShape.componentKey, color: selectedColor, size:selectedSize, rotation: 0,
+            id:generatedShapId(), x, y, componentKey: selectedShape.componentKey, color: selectedColor, size:selectedSize, rotation: 0,
         }]);
         localStorage.setItem('canvasShapes', JSON.stringify(shapes));
         console.log(shapes);
@@ -291,64 +290,36 @@ export default function ArtBoard() {
 
     return (
         <main className="main-page">
-            <nav className='nav_bar'>
-                <div className='bar_container'>
-                    <Link href="/">
-                        <Image src={homeIcon} alt="homeIcon" width={0} height={0}/>
-                    </Link>
-                    <button
-                        className={selectedButton === 'file' ? 'bar_button selected' : 'bar_button'}
-                        onClick={() => {
+            <Header
+                setFileOnView={setFileOnView}
+                isSidebarOpen={isSidebarOpen}
+                onToggleSidebar={() => setSidebarOpen((open) => !open)}
+            />
 
-                            if (selectedButton === 'file') {
-                                setSelectedButton(null);
-                                setFileOnView(false);
-                            }else {
-                                setSelectedButton('file');
-                                setFileOnView(true);
-                            }
-                        }}
-                    >
-                        File
-                    </button>
+            <div className='pag_container'>
+                <div
+                    className="sidebar-backdrop"
+                    data-open={isSidebarOpen || undefined}
+                    onClick={() => setSidebarOpen(false)}
+                />
 
-                    <button
-                        className={selectedButton === 'tools' ? 'bar_button selected' : 'bar_button'}
-                        onClick={() => {
-
-                            if (selectedButton === 'tools') {
-                                setSelectedButton(null);
-                                setToolsOnView(false);
-                            }else{
-                            setSelectedButton('tools');
-                                setToolsOnView(true);
-                            }
-                        }
-                        }
-                    >
-                        Tools
-                    </button>
-                </div>
-            </nav>
-
-            <article className='pag_container'>
-                <nav className={`${!fileOnView&&!toolsOnView ? `hidden` : `side-bar ` }`}>
-
-                    <FileBar view={fileOnView} selectedShapeIndex={selectedShapeIndex} handleDownloadPDF={handleDownloadPDF} handlePrint={handlePrint} handleClearAll={handleClearAll} handleUnset={handleUnset} handleDelete={handleDelete}/>
-                    <ToolsBar view={toolsOnView} gridActive={gridActive} setGridActive={setGridActive} selected={selected} setSelected={setSelected} selectedColor={selectedColor} setSelectedColor={setSelectedColor} selectedSize={selectedSize} setSelectedSize={setSelectedSize} afterResize={afterResize} afterRefill={afterRefill}/>
-
+                <nav className="">
+                    <div id="side-bar" className="side-bar" data-open={isSidebarOpen || undefined}>
+                        <FileBar view={fileOnView} selectedShapeIndex={selectedShapeIndex} handleDownloadPDF={handleDownloadPDF} handlePrint={handlePrint} handleClearAll={handleClearAll} handleUnset={handleUnset} handleDelete={handleDelete}/>
+                        <ToolsBar gridActive={gridActive} setGridActive={setGridActive} selected={selected} setSelected={setSelected} selectedColor={selectedColor} setSelectedColor={setSelectedColor} selectedSize={selectedSize} setSelectedSize={setSelectedSize} afterResize={afterResize} afterRefill={afterRefill}/>
+                    </div>
                 </nav>
 
                 <section className="art-board">
                     <div className="art-board-container">
-                    { gridActive ?
-                        <Grid selected={selected} setDraggingIndex={setDraggingIndex} draggingIndex={draggingIndex} dragOffset={dragOffset} setSelectedShapeIndex={setSelectedShapeIndex} shapes={shapes} handleDragStart={handleDragStart} handleResizeStart={handleResizeStart} handleTouchStart={handleTouchStart} selectedSize={selectedSize} setShapes={setShapes} selectedColor={selectedColor} handleResizeTouchStart={handleResizeTouchStart} selectedShapeIndex={selectedShapeIndex} handleRotateStart={handleRotateStart}/>
-                        :
-                        <Freeform selected={selected} setShapes={setShapes} draggingIndex={ draggingIndex} dragOffset={dragOffset} setDraggingIndex={setDraggingIndex} setSelectedShapeIndex={setSelectedShapeIndex} shapes={shapes} handleDragStart={handleDragStart} handleResizeStart={handleResizeStart} handleTouchStart={handleTouchStart} handleAddShape={ handleAddShape} handleResizeTouchStart={handleResizeTouchStart} selectedShapeIndex={selectedShapeIndex} handleRotateStart={handleRotateStart}/>
-                    }
+                        { gridActive ?
+                            <Grid selected={selected} setDraggingIndex={setDraggingIndex} draggingIndex={draggingIndex} dragOffset={dragOffset} setSelectedShapeIndex={setSelectedShapeIndex} shapes={shapes} handleDragStart={handleDragStart} handleResizeStart={handleResizeStart} handleTouchStart={handleTouchStart} selectedSize={selectedSize} setShapes={setShapes} selectedColor={selectedColor} handleResizeTouchStart={handleResizeTouchStart} selectedShapeIndex={selectedShapeIndex} handleRotateStart={handleRotateStart}/>
+                            :
+                            <Freeform selected={selected} setShapes={setShapes} draggingIndex={ draggingIndex} dragOffset={dragOffset} setDraggingIndex={setDraggingIndex} setSelectedShapeIndex={setSelectedShapeIndex} shapes={shapes} handleDragStart={handleDragStart} handleResizeStart={handleResizeStart} handleTouchStart={handleTouchStart} handleAddShape={ handleAddShape} handleResizeTouchStart={handleResizeTouchStart} selectedShapeIndex={selectedShapeIndex} handleRotateStart={handleRotateStart}/>
+                        }
                     </div>
                 </section>
-            </article>
+            </div>
 
         </main>
     );

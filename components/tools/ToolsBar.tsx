@@ -1,17 +1,16 @@
 import React from "react";
 import Image from "next/image";
-import shapesIcon from "@/app/assets/icons/shapesIcon.png";
-import {shapeOptions} from "@/app/shapes/Shapes"
-import {componentMap} from "@/app/shapes/Shapes";
-import {drawOptions} from "@/app/artBoard/util/draw";
-import colorsIcon from "@/app/assets/icons/colorIcon.png";
-import {colorOptions} from "@/app/artBoard/util/colors";
-import sizeIcon from "@/app/assets/icons/sizeIcon.png";
-import gridIcon from "@/app/assets/icons/gridIcon.png";
+import {shapeOptions} from "@/util/shapes/Shapes"
+import {componentMap} from "@/util/shapes/Shapes";
+import {drawOptions} from "@/util/draw";
+import {colorOptions} from "@/util/colors";
 
+import colorsIcon from "@/assets/icons/colorIcon.png";
+import shapesIcon from "@/assets/icons/shapesIcon.png";
+import sizeIcon from "@/assets/icons/sizeIcon.png";
+import gridIcon from "@/assets/icons/gridIcon.png";
 
 interface toolsBarProps {
-    view:boolean,
     gridActive:boolean,
     setGridActive:(gridActive:boolean) => void,
     selected:number|null,
@@ -25,11 +24,11 @@ interface toolsBarProps {
 
 }
 
-const ToolsBar:React.FC<toolsBarProps> = ({ view,gridActive, setGridActive, selected, setSelected, selectedColor, setSelectedColor, selectedSize, setSelectedSize, afterResize, afterRefill}) => {
+const ToolsBar:React.FC<toolsBarProps> = ({ gridActive, setGridActive, selected, setSelected, selectedColor, setSelectedColor, selectedSize, setSelectedSize, afterResize, afterRefill}) => {
 
     return (
         <div
-            className={` ${ !view? `hidden` : `drawing-tools` }`}>
+            className={`drawing-tools h-lvh`}>
             <label className={'shape-title'}>
                 <Image className="shapeIcon" src={shapesIcon} alt={'shapes'} width={20} height={20}/>
                 Shapes</label>

@@ -1,17 +1,20 @@
 'use client'
+
 import './globals.css'
+import React, {useEffect} from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import Asset2 from 'app/shapes/SVG/Asset2.svg';
-import Asset3 from 'app/shapes/SVG/Asset3.svg';
-import HalfCircle from 'app/shapes/SVG/Halfcircle.svg';
-import Circle from 'app/shapes/SVG/Circle.svg';
-import Vierkant from 'app/shapes/SVG/Vierkant.svg';
-import Driehoek from 'app/shapes/SVG/Driehoek.svg';
-import Ruitvorm from 'app/shapes/SVG/Ruitvorm.svg';
-import HalveCirkelOnderkant from 'app/shapes/SVG/Halve-cirkel-onderkant.svg';
-import Trapezium from 'app/shapes/SVG/Trapezium.svg';
-import React, {useEffect} from "react";
+
+import Asset2 from '@/util/shapes/SVG/Asset2.svg';
+import Asset3 from '@/util/shapes/SVG/Asset3.svg';
+import HalfCircle from '@/util/shapes/SVG/Halfcircle.svg';
+import Circle from '@/util/shapes/SVG/Circle.svg';
+import Vierkant from '@/util/shapes/SVG/Vierkant.svg';
+import Driehoek from '@/util/shapes/SVG/Driehoek.svg';
+import Ruitvorm from '@/util/shapes/SVG/Ruitvorm.svg';
+import HalveCirkelOnderkant from '@/util/shapes/SVG/Halve-cirkel-onderkant.svg';
+import Trapezium from '@/util/shapes/SVG/Trapezium.svg';
+
 
 
 export default function Home() {
@@ -40,13 +43,13 @@ export default function Home() {
         <main className="flex justify-between max-w-screen flex-wrap p-6 m-20 gap-20 relative">
             <div className="flex justify-center  w-full">
             <Link
-                href="./artBoard"
+                href="board"
                 onClick={() => {hendelNew()}}
                 className="absolute mt-70 border w-80 text-center rounded-full font-semibold p-6 bg-white text-gray-900 z-20 hover:bg-blue-400 hover:scale-105 transport duration-900"
             >New Board</Link>
                 {hasCanvas && (
                     <Link
-                        href="./artBoard"
+                        href="board"
                         className="absolute mt-90 w-70 text-center rounded-full border p-6 bg-white text-gray-800 z-20 hover:bg-blue-400  hover:scale-105 transport duration-900"
                     >Resume</Link>
                 )}

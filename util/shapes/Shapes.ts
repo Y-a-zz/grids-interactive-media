@@ -1,15 +1,15 @@
 
-import Asset2 from 'app/shapes/SVG/Asset2.svg';
-import Asset3 from 'app/shapes/SVG/Asset3.svg';
-import HalfCircle from 'app/shapes/SVG/Halfcircle.svg';
-import Circle from 'app/shapes/SVG/Circle.svg';
-import Vierkant from 'app/shapes/SVG/Vierkant.svg';
-import Driehoek from 'app/shapes/SVG/Driehoek.svg';
-import Ruitvorm from 'app/shapes/SVG/Ruitvorm.svg';
-import HalveCirkelOnderkant from 'app/shapes/SVG/Halve-cirkel-onderkant.svg';
-import Trapezium from 'app/shapes/SVG/Trapezium.svg';
-import Ster from 'app/shapes/SVG/Ster.svg';
-import Flower from 'app/shapes/SVG/Flower.svg'
+import Asset2 from '@/util/shapes/SVG/Asset2.svg';
+import Asset3 from '@/util/shapes/SVG/Asset3.svg';
+import HalfCircle from '@/util/shapes/SVG/Halfcircle.svg';
+import Circle from '@/util/shapes/SVG/Circle.svg';
+import Vierkant from '@/util/shapes/SVG/Vierkant.svg';
+import Driehoek from '@/util/shapes/SVG/Driehoek.svg';
+import Ruitvorm from '@/util/shapes/SVG/Ruitvorm.svg';
+import HalveCirkelOnderkant from '@/util/shapes/SVG/Halve-cirkel-onderkant.svg';
+import Trapezium from '@/util/shapes/SVG/Trapezium.svg';
+import Ster from '@/util/shapes/SVG/Ster.svg';
+import Flower from '@/util/shapes/SVG/Flower.svg'
 
 import {FC, SVGProps} from "react";
 type SVGComponent = FC<SVGProps<SVGSVGElement>>;

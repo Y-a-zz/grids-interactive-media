@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {componentMap} from "@/app/shapes/Shapes";
+import {componentMap} from "@/util/shapes/Shapes";
 type Shape = {
     id:number
     x: number,
@@ -84,7 +84,7 @@ const Freeform:React.FC<FreeformState> = ({draggingIndex,setShapes,dragOffset,se
             window.removeEventListener("touchmove", handleTouchMove);
             window.removeEventListener("touchend", handleTouchEnd);
         };
-    }, [draggingIndex, dragOffset]);
+    }, [draggingIndex, dragOffset, setShapes, setDraggingIndex]);
     return (
         <div id={"print-section"} className="page work-space relative  bg-white overflow-clip rounded-md shadow-lg"
              style={{

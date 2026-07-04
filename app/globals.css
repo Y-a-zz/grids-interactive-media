@@ -1,10 +1,9 @@
 @import "tailwindcss";
-
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
 
-
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
 :root {
   --background: rgba(216, 128, 28, 0.66);
   --foreground: rgba(133, 78, 22, 0.16);
@@ -13,67 +12,77 @@
   --barButton: rgba(216, 128, 28, 0.03);
   --barButtonSelected: rgba(216, 128, 28, 0.66);
   --section: rgba(246, 237, 209, 0.98);
-  --text:rgb(9, 0, 0);
+  --text: rgb(9, 0, 0);
 
+  /* layout tokens */
+  --nav-height: 60px;
+  --sidebar-width: 400px;
+  --page-width: 794px;   /* A4 @96dpi */
+  --page-height: 1123px;
+  --gap-sm: 8px;
+  --gap-md: 20px;
 }
-
-/*@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}*/
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: rgba(71, 65, 65, 0.6);
     --foreground: rgba(236, 231, 231, 0.16);
-    --bar:black;
-    --bar-text:white;
+    --bar: black;
+    --bar-text: white;
     --barButton: rgba(216, 128, 28, 0.03);
     --barButtonSelected: rgba(71, 65, 65, 0.6);
     --section: rgba(5, 5, 5, 0.13);
-    --text:rgb(9, 0, 0);
+    --text: rgb(9, 0, 0);
   }
 }
+
+/* ==========================================================================
+   Print
+   ========================================================================== */
 @media print {
   body {
     margin: 0;
     padding: 0;
     background: white;
+    width: 100vw;
   }
+
   body * {
     visibility: hidden;
-
   }
+
   #print-section,
   #print-section * {
     visibility: visible;
-
   }
-
 
   #print-section {
     position: absolute !important;
-    left: 0!important;
-    top: 0!important;
-    width: 8.27in!important;
-    height: 11.69in!important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 8.27in !important;
+    height: 11.69in !important;
     box-shadow: none !important;
     overflow: hidden !important;
-    page-break-inside: avoid!important;
+    page-break-inside: avoid !important;
   }
-  #grids{
-    display: none!important;
+
+  #grids {
+    display: none !important;
   }
+
   @page {
     size: A4;
     margin: 0;
   }
 }
 
-
-
+/* ==========================================================================
+   Base
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+}
 
 body {
   display: flex;
@@ -82,349 +91,509 @@ body {
   justify-content: center;
   font-family: Arial, Helvetica, sans-serif;
   width: 100%;
-  .main-page{
-    display: flex;
-    flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   Nav bar
+   ========================================================================== */
+.nav_bar {
+  display: flex;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}
+
+.bar_container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: var(--bar);
+  color: var(--bar-text);
+  min-height: var(--nav-height);
+  padding: 10px 16px;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 7px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.bar_container::-webkit-scrollbar {
+  display: none;
+}
+
+.bar_container a img {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.bar_container .bar_button {
+  padding: 11px;
+  background-color: var(--barButton);
+  cursor: pointer;
+  border-radius: 7px;
+  border: none;
+  font-weight: bold;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.bar_container .bar_button:hover {
+  background-color: var(--barButtonSelected);
+}
+
+.bar_container .bar_button.selected {
+  background-color: var(--barButtonSelected);
+}
+
+.bar_container .bar_button:active {
+  background-color: rgb(241, 185, 64);
+  scale: 75%;
+}
+
+@media screen and (max-width: 600px) {
+  .bar_container {
+    padding: 8px 10px;
     gap: 4px;
-    width: 100%;
-
-    /* background-color: aquamarine; */
-
-    .nav_bar{
-      display: flex;
-      width: 100%;
-      .bar_container{
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        background-color: var(--bar);
-        color: var(--bar-text);
-        height: 50px;
-        padding:20px;
-        justify-content: start;
-        align-items: center;
-        gap: 7px;
-
-        a img {
-          display: flex;
-          width: 40px;
-          height:40px ;
-        }
-        .bar_button {
-          padding: 11px;
-          background-color: var(--barButton);
-          cursor: pointer;
-          border-radius: 7px;
-          border: none;
-          font-weight: bold;
-          transition: background-color 0.2s ease;
-        }
-
-        .bar_button:hover {
-          background-color: var(--barButtonSelected);
-        }
-
-        .bar_button.selected {
-          background-color: var(--barButtonSelected);
-        }
-        .bar_button:active {
-          background-color: rgb(241, 185, 64);
-          scale: 75%;
-        }
-
-
-      }
-    }
-
-    .pag_container{
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      gap: 7px;
-      width: 100vw;
-
-      .side-bar{
-        display: flex;
-        flex-direction: column;
-        /* padding: px 0; */
-        gap: 8px;
-        background-color: var(--foreground);
-        border-radius: 15px;
-        height:fit-content;
-        min-width: 250px;
-        padding: 2px;
-        
-        .file-section{
-          background-color:var(--section);
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: start;
-          border-radius: 15px;
-          gap: 20px;
-          height: fit-content;
-          padding:10px 20px;
-
-          .file-container{
-            display: flex;
-            gap: 12px;
-            flex-direction: column;
-            flex-wrap: nowrap;
-
-            .file-button{
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              gap: 12px;
-              cursor: pointer;
-            }
-          
-            .file-button:hover{
-              transition: 0.3s ;
-              transform: scale(1.1);
-            }
-
-            
-          }
-        }
-        .drawing-tools{
-          display: flex;
-          flex-direction: column;
-          padding: 4px ;
-          border-radius: 15px;
-          justify-items: center;
-          gap: 10px;
-          .shape-title{
-                display: flex;
-                gap:7px;
-                margin: 10px;
-                height: 20px;
-                .shapeIcon{
-                  display: block;
-                  width: 20px;
-                }
-              }
-          .shape-selection{
-            display: flex;
-            flex-direction: column;
-            border-radius: 15px;
-            background-color: var(--section);
-            padding: 10px 0 ;
-
-            .shape-container{
-              display: flex;
-              flex-direction: column;
-              border-radius: 15px;
-              gap: 10px;
-              
-              .shape-items{
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 8px;
-                padding-top: 10px;
-                justify-content: center;
-                
-
-              }
-
-            }
-            .draw-container{
-              display: none;
-              .draw-title{
-                .draw-items{
-                  
-                }
-              }
-            }
-
-          }
-          .editor{
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            .size{
-              display: flex;
-              flex-direction: column;
-                label {
-                  display: flex;
-                  align-items: center;
-                  gap: 7px;
-                  margin: 10px;
-                  .sizeIcon{
-                    display: block;
-                    width: 30px;
-                    height: 20px;
-                  }
-              
-                }
-                .size-container{
-              background-color:var(--section);
-              display: flex;
-              justify-content: center;
-              padding: 3px;
-              border-radius: 15px;
-              margin-top: 10px;
-            
-            }
-              }
-            
-            .colors-container{
-              display: flex;
-              flex-direction: column;
-              label {
-              
-                display:flex;
-                align-items: center;
-                gap: 7px;
-                margin: 10px;
-                .colorsIcon{
-                  display: block;
-                  width: 21px;
-
-                }
-              }
-              .colors{
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                align-items: center;
-                height: 80px;
-                padding: 2px;
-                background-color: var(--section);
-                border-radius: 15px;
-                gap: 5px;
-
-                .color-button{
-                  display: flex;
-                  /* background-color: #26a441; */
-                  width: 20px;
-                  height: 20px;
-                  border-radius: 15px;
-                  cursor: pointer;
-                
-
-                }
-
-              }
-            }
-            .grid-switcher {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              gap: 1rem;
-              background-color: var(--foreground);
-              padding: 0.6rem 1rem;
-              border-radius: 10px;
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-              width: 100%;
-              margin-top: 60px;
-            }
-
-            .grid-label {
-              display: flex;
-              align-items: center;
-              gap: 0.5rem;
-              font-weight: 500;
-              color: #333;
-            }
-
-            .grid-icon {
-              width: 24px;
-              height: 24px;
-            }
-
-            /* Custom switch */
-            .switch {
-              position: relative;
-              display: inline-block;
-              width: 40px;
-              height: 20px;
-            }
-
-            .switch input {
-              opacity: 0;
-              width: 0;
-              height: 0;
-            }
-
-            .slider {
-              position: absolute;
-              cursor: pointer;
-              background-color: #cccc;
-              border-radius: 40px;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              transition: 1.2s;
-            }
-
-            .slider::before {
-              content: "";
-              position: absolute;
-              height: 16px;
-              width: 16px;
-              left: 2px;
-              bottom:2px;
-              background-color: white;
-              transition: 0.8s;
-              border-radius: 50%;
-            }
-
-            input:checked + .slider {
-              background-color: #4caf50;
-            }
-
-            input:checked + .slider::before {
-              transform: translateX(20px);
-              height: 20px;
-              width: 20px;
-              left: 0;
-              bottom: 0;
-            }
-
-          }
-
-        }
-      }
-      .art-board{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        width: 100%;
-        .art-board-container{
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: auto;
-          .work-space {
-            display: flex;
-            height: 1123px;
-            width: 794px;
-
-            .grid-overlay {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-            }
-            .grid-overlay:hover{
-              column-fill: balance;
-            }
-            .rotate-handle1:hover{
-              display: block;
-            }
-
-
-          }
-        }
-
-      }
-    }
   }
-  
+
+  .bar_container a img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .bar_container .bar_button {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+}
+
+/* ==========================================================================
+   Page layout (sidebar + art board)
+   ========================================================================== */
+.pag_container {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--gap-md);
+  width: 100%;
+  max-width: 100vw;
+  padding: calc(var(--nav-height) + 10px) var(--gap-md) var(--gap-md);
+}
+
+.side-bar {
+  position: sticky;
+  top: calc(var(--nav-height) + 10px);
+  width: 100%;
+  max-width: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  background-color: var(--foreground);
+  border-radius: 15px;
+  height: fit-content;
+}
+
+.file-section {
+  background-color: var(--section);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border-radius: 15px;
+  gap: 20px;
+  height: fit-content;
+  padding: 10px 20px;
+}
+
+.file-container {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.file-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.file-button:hover {
+  transform: scale(1.1);
+}
+
+/* --- drawing tools --- */
+.drawing-tools {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  border-radius: 15px;
+  justify-items: center;
+  gap: 10px;
+}
+
+.shape-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 10px;
+  height: 20px;
+}
+
+.shape-title .shapeIcon {
+  display: block;
+  width: 20px;
+}
+
+.shape-selection {
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  background-color: var(--section);
+  padding: 10px 0;
+}
+
+.shape-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  gap: 10px;
+}
+
+.shape-items {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 10px;
+  justify-content: center;
+}
+
+.draw-container {
+  display: none;
+}
+
+/* --- editor --- */
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editor .size {
+  display: flex;
+  flex-direction: column;
+}
+
+.editor .size label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 10px;
+}
+
+.editor .size .sizeIcon {
+  display: block;
+  width: 30px;
+  height: 20px;
+}
+
+.editor .size .size-container {
+  background-color: var(--section);
+  display: flex;
+  justify-content: center;
+  padding: 3px;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+.colors-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.colors-container label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 10px;
+}
+
+.colors-container .colorsIcon {
+  display: block;
+  width: 21px;
+}
+
+.colors-container .colors {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+  padding: 8px;
+  background-color: var(--section);
+  border-radius: 15px;
+  gap: 5px;
+}
+
+.colors-container .color-button {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+/* --- grid switcher --- */
+.grid-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: var(--foreground);
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-top: 30px;
+}
+
+.grid-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.grid-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 40px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #4caf50;
+}
+
+input:checked + .slider::before {
+  transform: translateX(20px);
+  height: 16px;
+  width: 16px;
+}
+
+/* ==========================================================================
+   Art board
+   ========================================================================== */
+.art-board {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0; /* laat de grid-cel echt kunnen krimpen */
+}
+
+.art-board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.work-space {
+  position: relative;
+  flex-shrink: 0;
+  height: var(--page-height);
+  width: var(--page-width);
+  /* Schaalt de vaste A4-afmeting mee met de beschikbare ruimte,
+     zonder de interne pixel-coördinaten van tekeningen te wijzigen. */
+  transform: scale(var(--zoom, 1));
+  transform-origin: top center;
+  background: #fff;
+}
+
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rotate-handle1:hover {
+  display: block;
+}
+
+/* ==========================================================================
+   Responsive breakpoints
+   ========================================================================== */
+
+/* Tablet: sidebar iets smaller, art-board zorgt zelf voor scrollen */
+@media screen and (max-width: 1100px) {
+  :root {
+    --sidebar-width: 320px;
+  }
+}
+
+/* Onder 900px: art-board blijft de basisweergave, de sidebar wordt
+   een dropdown-paneel dat er overheen valt i.p.v. de layout te stapelen */
+@media screen and (max-width: 900px) {
+  .pag_container {
+    grid-template-columns: 1fr;
+    padding: calc(var(--nav-height) + 10px) 12px 12px;
+    gap: 0;
+    position: relative;
+  }
+
+  .side-bar {
+    position: absolute;
+    top: calc(var(--nav-height) + 10px);
+    left: 12px;
+    right: 12px;
+    max-width: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 40;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+    transition: max-height 0.3s ease, opacity 0.2s ease;
+  }
+
+  .side-bar[data-open] {
+    max-height: 75vh;
+    overflow-y: auto;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .art-board {
+    width: 100%;
+  }
+}
+
+/* Knop die de dropdown opent/sluit — alleen zichtbaar onder 900px */
+.sidebar-toggle {
+  display: none;
+}
+
+/* Halfdoorzichtige laag achter de dropdown, sluit 'm bij een klik erbuiten */
+.sidebar-backdrop {
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  .sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px;
+    background-color: var(--barButton);
+    color: var(--bar-text);
+    border: none;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease;
+  }
+
+  .sidebar-toggle[aria-expanded="true"] {
+    background-color: var(--barButtonSelected);
+  }
+
+  .sidebar-backdrop[data-open] {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 30;
+    padding: 10px;
+  }
+}
+
+/* Mobiel: compactere spacing, grid-switcher marge terug */
+@media screen and (max-width: 490px) {
+  .pag_container {
+    padding: calc(var(--nav-height) + 6px) 8px 8px;
+  }
+
+  .side-bar {
+    border-radius: 10px;
+    padding-right: 25px;
+  }
+
+  .file-section {
+    padding: 10px 14px;
+  }
+
+  .grid-switcher {
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .art-board-container {
+    padding: 4px 0;
+  }
 }

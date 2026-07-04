@@ -1,9 +1,11 @@
 import Image from "next/image";
-import exportPdf from "@/app/assets/icons/export-pdf-512.webp";
-import printIcon from "@/app/assets/icons/print.png";
-import resetIcon from "@/app/assets/icons/reset.png";
-import terugIcon from "@/app/assets/icons/unset.png";
-import deleteIcon from "@/app/assets/icons/trash.png";
+
+
+import exportPdf from "@/assets/icons/export-pdf-512.webp";
+import printIcon from "@/assets/icons/print.png";
+import resetIcon from "@/assets/icons/reset.png";
+import terugIcon from "@/assets/icons/unset.png";
+import deleteIcon from "@/assets/icons/trash.png";
 
 import React from "react";
 
